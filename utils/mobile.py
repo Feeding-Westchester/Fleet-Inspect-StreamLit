@@ -21,6 +21,11 @@ MOBILE_CSS = """
 /* ── Viewport ── */
 @viewport { width: device-width; }
 
+/* Hide Streamlit's auto-generated page nav */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
 /* ── Hide Streamlit chrome on mobile ── */
 @media (max-width: 768px) {
     [data-testid="stSidebar"]          { display: none !important; }
