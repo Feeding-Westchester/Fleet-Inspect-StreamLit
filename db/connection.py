@@ -26,16 +26,22 @@ import functools
 @st.cache_resource(show_spinner=False)
 def _get_connection():
     sf = st.secrets["snowflake"]
-    conn = snowflake.connector.connect(
-        account=sf["account"],
-        user=sf["user"],
-        password=sf["password"],
-        warehouse=sf["warehouse"],
-        database=sf["database"],
-        schema=sf["schema"],
-        role=sf.get("role", "FLEET_INSPECT_ROLE"),
-        session_parameters={"TIMEZONE": "America/New_York"},
-    )
+  conn = snowflake.connector.connect(
+    account=sf["account"],
+    user=sf["user"],
+    password=sf["password"],
+    warehouse=sf["warehouse"],
+    database=sf["database"],
+    schema=sf["schema"],
+    role=sf.get("role", "FLEET_INSPECT_ROLE"),
+    session_parameters={
+        "TIMEZONE": "America/New_York",
+        "AUTOCOMMIT": False,
+    },
+)
+conn.cursor().execute(f"USE WAREHOUSE {sf['warehouse']}")
+conn.cursor().execute(f"USE DATABASE {sf['database']}")
+conn.cursor().execute(f"USE SCHEMA {sf['schema']}")
     return conn
 
 
