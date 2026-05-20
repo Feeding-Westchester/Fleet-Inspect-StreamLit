@@ -1,7 +1,3 @@
-"""
-Fleet Inspect — Snowflake connection module.
-"""
-
 import snowflake.connector
 import streamlit as st
 from contextlib import contextmanager
@@ -17,14 +13,8 @@ def _get_connection():
         database=sf["database"],
         schema=sf["schema"],
         role=sf.get("role", "FLEET_INSPECT_ROLE"),
-        session_parameters={
-            "TIMEZONE": "America/New_York",
-            "AUTOCOMMIT": False,
-        },
+        autocommit=False,
     )
-    conn.cursor().execute(f"USE WAREHOUSE {sf['warehouse']}")
-    conn.cursor().execute(f"USE DATABASE {sf['database']}")
-    conn.cursor().execute(f"USE SCHEMA {sf['schema']}")
     return conn
 
 
